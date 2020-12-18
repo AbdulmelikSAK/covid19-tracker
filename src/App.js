@@ -6,7 +6,7 @@ import Map from './components/Map';
 import Table from './components/Table';
 import { sortData } from './components/util';
 import LineGraph  from './components/LineGraph';
-import 'leaflet/dist/leaflet.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 function App() {
 
@@ -17,25 +17,28 @@ function App() {
   const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
   const [mapZoom, setMapZoom] = useState(3);
 
-
-  useEffect(()=>{
-    fetch('https://disease.sh/v3/covid-19/all').then(response => response.json()).then(data =>{
-      setCountryInfo(data);
-    })
-  },[]);
+  useEffect(() => {
+    fetch("https://disease.sh/v3/covid-19/all")
+      .then((response) => response.json())
+      .then((data) => {
+        setCountryInfo(data);
+      });
+  }, []);
 
   useEffect(() => {
-    const getCountriesData = async() => {
-      await fetch("https://disease.sh/v3/covid-19/countries").then((response)=> response.json()).then((data)=>{
-        const countries = data.map((country) =>({
-          name: country.country,
-          value: country.countryInfo.iso2,
-        }));
-        const sortedData = sortData(data)
-        setTableData(sortedData);
-        setCountries(countries);
-      })
-    }
+    const getCountriesData = async () => {
+      fetch("https://disease.sh/v3/covid-19/countries")
+        .then((response) => response.json())
+        .then((data) => {
+          const countries = data.map((country) => ({
+            name: country.country,
+            value: country.countryInfo.iso2,
+          }));
+          let sortedData = sortData(data);
+          setCountries(countries);
+          setTableData(sortedData);
+        });
+    };
     getCountriesData();
   }, []);
 
@@ -43,16 +46,19 @@ function App() {
     const countryCode = e.target.value;
 
     const url =
-    countryCode === "worldwide"
-      ? "https://disease.sh/v3/covid-19/all"
-      : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
-    await fetch(url).then(response => response.json()).then(data => {
-      setCountry(countryCode);
-      setCountryInfo(data);
-      setMapCenter({lat: data.countryInfo.lat, lng: data.countryInfo.long});
-      setMapZoom(4);
-    })
-  }
+      countryCode === "worldwide"
+        ? "https://disease.sh/v3/covid-19/all"
+        : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+    await fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        setCountry(countryCode);
+        setCountryInfo(data);
+        console.log(data.countryInfo.lat, data.countryInfo.long)
+        setMapCenter([ data.countryInfo.lat, data.countryInfo.long ]);
+        setMapZoom(4);
+      });
+  };
 
   return (
     <div className="app">
@@ -78,6 +84,7 @@ function App() {
         <Map
           center={mapCenter}
           zoom={mapZoom}/>
+
     </div>
     <Card className='app__right'>
      <CardContent>
