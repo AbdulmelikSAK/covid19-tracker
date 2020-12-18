@@ -17,8 +17,8 @@ function Map({ center, zoom }){
       center: center,
       zoom: zoom, // initial zoom
     });
-  }, []);
-    
+  });
+
   return (
         <div className='map' >
             <div className='mapContainer'>
