@@ -59,7 +59,7 @@ function App() {
       .then((data) => {
         setCountry(countryCode);
         setCountryInfo(data);
-        setMapCenter([data.countryInfo.long, data.countryInfo.lat ]);
+        setMapCenter({lng: data.countryInfo.long, lat: data.countryInfo.lat} );
         setMapZoom(4);
       });
   };
