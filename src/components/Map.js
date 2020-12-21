@@ -11,16 +11,16 @@ function Map({ center, zoom, countries, casesType }){
         <div className='map'>
             <div className='mapContainer'>
                 <div className="mapBox" >
+
                 <MapToken
                     style="mapbox://styles/mapbox/streets-v9"
                     containerStyle={{
                       height: '100%',
-                      width: '100%',
-
-                    }}
+                      width: '100%'}}
                     zoom={[zoom]}
                     center={center}
-                    >     {showDataOnMap(countries, casesType)}
+                    >
+                  {showDataOnMap(countries, casesType)}
                   </MapToken>
                   </div>
             </div>
