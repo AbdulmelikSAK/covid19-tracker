@@ -1,27 +1,28 @@
-import React, {useEffect,useRef} from 'react';
+import React from 'react';
 import './Map.css'
-import mapboxgl from 'mapbox-gl';
+import ReactMapboxGl from 'react-mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-mapboxgl.accessToken = process.env.API_TOKEN;
+import { showDataOnMap } from "./util";
 
-function Map({ center, zoom }){
-    const mapboxElRef = useRef(null); // DOM element to render map
+const MapToken = ReactMapboxGl ({accessToken:`${process.env.REACT_APP_API_KEY_MAPBOX}`});
 
-  // Initialize our map
-  useEffect(() => {
-    // Mapbox functionality goes here
-    new mapboxgl.Map({
-      container: mapboxElRef.current,
-      style: "mapbox://styles/notalemesa/ck8dqwdum09ju1ioj65e3ql3k",
-      center: center,
-      zoom: zoom, // initial zoom
-    });
-  });
-
+function Map({ center, zoom, countries, casesType }){
   return (
-        <div className='map' >
+        <div className='map'>
             <div className='mapContainer'>
-                <div className="mapBox" ref={mapboxElRef} />
+                <div className="mapBox" >
+                <MapToken
+                    style="mapbox://styles/mapbox/streets-v9"
+                    containerStyle={{
+                      height: '100%',
+                      width: '100%',
+
+                    }}
+                    zoom={[zoom]}
+                    center={center}
+                    >     {showDataOnMap(countries, casesType)}
+                  </MapToken>
+                  </div>
             </div>
         </div>
     )
