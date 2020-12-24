@@ -16,7 +16,7 @@ function App() {
   const [country, setCountry] = useState('worldwide');
   const [countryInfo, setCountryInfo] = useState({});
   const [tableData,setTableData] = useState([]);
-  const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
+  const [mapCenter, setMapCenter] = useState({  lng: 2.213749, lat: 46.227638 });
   const [mapZoom, setMapZoom] = useState(3);
   const [mapCountries, setMapCountries] = useState([]);
   const [casesType, setCasesType] = useState('cases');
@@ -52,14 +52,14 @@ function App() {
 
     const url =
       countryCode === "worldwide"
-        ? "https://disease.sh/v3/covid-19/all"
+        ? 'https://disease.sh/v3/covid-19/countries/'
         : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
-    await fetch(url)
+     await fetch(url)
       .then((response) => response.json())
       .then((data) => {
         setCountry(countryCode);
         setCountryInfo(data);
-        setMapCenter({lng: data.countryInfo.long, lat: data.countryInfo.lat} );
+        setMapCenter([data.countryInfo.long, data.countryInfo.lat]);
         setMapZoom(4);
       });
   };
@@ -106,8 +106,6 @@ function App() {
           />
         </div>
         <Map
-          countries={mapCountries}
-          casesType={casesType}
           center={mapCenter}
           zoom={mapZoom}/>
 
