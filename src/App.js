@@ -47,9 +47,8 @@ function App() {
     getCountriesData();
   }, []);
 
-  const onCountryChange = async (e) => {
+  const onCountryChange = async(e) => {
     const countryCode = e.target.value;
-
     const url =
       countryCode === "worldwide"
         ? 'https://disease.sh/v3/covid-19/countries/'
@@ -59,7 +58,8 @@ function App() {
       .then((data) => {
         setCountry(countryCode);
         setCountryInfo(data);
-        setMapCenter([data.countryInfo.long, data.countryInfo.lat]);
+        const coordonnee = countryCode === 'worldwide' ? {  lng: 2.213749, lat: 46.227638 } : {lng: data.countryInfo.long, lat: data.countryInfo.lat}
+        setMapCenter(coordonnee);
         setMapZoom(4);
       });
   };
